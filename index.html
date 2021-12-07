@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <title>PVPSIT - Sorting (Bubble, Selection, Insertion, Merge, Quick,Radix)</title>
     <link rel="stylesheet" type="text/css" href="common.css">
@@ -9,34 +8,27 @@
         .execAction {
             padding: 5px 8px;
         }
-
         .err {
             padding: 5px 0px;
         }
-
         #actions-extras input {
             width: 35px;
             padding: 5px 8px 7px;
         }
-
         .create {
             bottom: 92px;
         }
-
         .sort {
             bottom: 65px;
         }
-
         #create-userdefined-input input {
             width: 300px;
         }
-
         text {
             fill: black;
             font: 20px sans-serif;
             text-anchor: middle;
         }
-
         #viz-radix-sort-canvas {
             position: fixed;
             top: 50%;
@@ -46,7 +38,6 @@
             height: 500px;
             width: 1000px;
         }
-
         div .radix-sort-element {
             position: absolute;
             border: 1px solid black;
@@ -54,13 +45,11 @@
             font: 20px sans-serif;
             color: black;
         }
-
         #radix-sort-bucket-labels-collection {
             position: absolute;
             bottom: 0px;
             left: 0px;
         }
-
         .radix-sort-bucket-label {
             position: absolute;
             border-top: 1px solid black;
@@ -68,7 +57,6 @@
             font: 20px sans-serif;
             color: black;
         }
-
         #sort-viz {
             width: 100%;
             text-align: center;
@@ -77,14 +65,9 @@
         }
     </style>
 </head>
-
 <body>
     <div id="top-bar">
-
         <a id="home" href="/">PVPSIT<span class="colour">"IT"</span><span style="font-size: 10px"></span></a>
-
-
-
         <span id="title">
             <a id='title-Bubble' class='selected-viz'>Bubble</a>
             <a id='title-Selection'>Selection</a>
@@ -123,7 +106,6 @@
         <span id="go-to-end" class="media-control-button" title="end" onclick=goToEnd()><img src="https://visualgo.net/img/goToEnd.png" alt="go to end"></span>
         <div id="progress-bar" class="media-control-button"></div>
     </div>
-
     <div id="sort-viz">
         <svg id="viz-canvas"></svg><br>
         <svg id="viz-counting-sort-secondary-canvas"></svg>
@@ -145,7 +127,6 @@
     <div id="current-action" class="panel">
         <p></p>
     </div>
-
     <div id="actions" class="panel">
         <p id="create">Create</p>
         <p id="sort">Sort</p>
@@ -163,7 +144,6 @@
             <div id="create-err" class="err"></div>
         </div>
         <div class="sort action-menu-pullout">
-
             <div id="sort-go" class="execAction new-menu-option coloured-menu-option" onclick="sort()">
                 <p>Go</p>
             </div>
@@ -175,29 +155,21 @@
         <a id="trigger-team"></a>
         <a id="trigger-terms"></a>
     </div>
-
-   
-
     <script src="jquery-3.3.1.min.js"></script>
     <script>
         var PHP_DOMAIN = "";
-
         // surprise colour!
         // Referenced to in  home.js and viz.js also
         var colourArray = ["#52bc69", "#d65775" /*"#ed5a7d"*/ , "#2ebbd1", "#d9513c", "#fec515", "#4b65ba", "#ff8a27", "#a7d41e"]; // green, pink, blue, red, yellow, indigo, orange, lime
-
         function disableScroll() {
             $('html').css('overflow', 'hidden');
         }
-
         function enableScroll() {
             $('html').css('overflow', 'visible');
         }
-
         function replaceAll(find, replace, str) {
             return str.replace(new RegExp(find, 'g'), replace);
         }
-
         function getColours() {
             var generatedColours = new Array();
             while (generatedColours.length < 4) {
@@ -207,11 +179,9 @@
             }
             return generatedColours;
         }
-
         function isOn(value, position) {
             return (value >> position) & 1 === 1;
         }
-
         function customAlert(msg) {
             $('#custom-alert p').html(msg);
             var m = -1 * ($('#custom-alert').outerHeight() / 2);
@@ -226,27 +196,21 @@
                 });
             });
         }
-
         function showLoadingScreen() {
             $('#loading-overlay').show();
             $('#loading-message').show();
         }
-
         function hideLoadingScreen() {
             $('#loading-overlay').hide();
         }
-
         function commonAction(retval, msg) {
-
             if (retval) {
                 $('#current-action').show();
                 $('#progress-bar').slider("option", "max", gw.getTotalIteration() - 1);
                 triggerRightPanels();
                 isPlaying = true;
             }
-
         }
-
         function getQueryVariable(variable) {
             var query = window.location.search.substring(1);
             var vars = query.split('&');
@@ -257,26 +221,21 @@
             }
             return "";
         }
-
         var generatedColours = getColours();
         var surpriseColour = colourArray[generatedColours[0]];
         var colourTheSecond = colourArray[generatedColours[1]];
         var colourTheThird = colourArray[generatedColours[2]];
         var colourTheFourth = colourArray[generatedColours[3]];
-
         $(function() {
             $('.links').css('background', surpriseColour);
             $('.right-links').css('background', surpriseColour);
             $('#login-go').css('background', surpriseColour);
-
             $('.colour').css("color", surpriseColour); // name
             $('h4').css("background-color", surpriseColour); // about, contact us etc. button background
-
             // title
             $('#title a').click(function() {
                 $('#title a').removeClass('selected-viz');
                 $(this).addClass('selected-viz');
-
                 setTimeout(function() {
                     document.body.style.zoom = "100.1%";
                 }, 100); // force resize/redraw...
@@ -284,7 +243,6 @@
                     document.body.style.zoom = "100%";
                 }, 600);
             });
-           
         });
     </script>
     <script src="jquery-ui.min.js"></script>
@@ -348,25 +306,20 @@
                 "#0000FF",
                 "#0000FF"
             ];
-
             var POSITION_USE_PRIMARY = "a";
             var POSITION_USE_SECONDARY_IN_DEFAULT_POSITION = "b";
-
-            
             var Entry = function(value, highlight, position, secondaryPositionStatus) {
                 this.value = value; // number
                 this.highlight = highlight; 
                 this.position = position; // number
                 this.secondaryPositionStatus = secondaryPositionStatus; 
             }
-
             var Backlink = function(value, highlight, entryPosition, secondaryPositionStatus) {
                 this.value = value; // number
                 this.highlight = highlight; 
                 this.entryPosition = entryPosition; // number
                 this.secondaryPositionStatus = secondaryPositionStatus; 
             }
-
             var State = function(entries, backlinks, barsCountOffset, status, lineNo) {
                 this.entries = entries; // array of Entry's
                 this.backlinks = backlinks; // array of Backlink's
@@ -374,7 +327,6 @@
                 this.status = status;
                 this.lineNo = lineNo; //integer or array, line of the code to highlight
             }
-
             //Helpers
             var EntryBacklinkHelper = new Object();
             EntryBacklinkHelper.appendList = function(entries, backlinks, numArray) {
@@ -382,12 +334,10 @@
                     EntryBacklinkHelper.append(entries, backlinks, numArray[i]);
                 }
             }
-
             EntryBacklinkHelper.append = function(entries, backlinks, newNumber) {
                 entries.push(new Entry(newNumber, HIGHLIGHT_NONE, entries.length, POSITION_USE_PRIMARY));
                 backlinks.push(new Backlink(newNumber, HIGHLIGHT_NONE, backlinks.length, POSITION_USE_PRIMARY));
             }
-
             EntryBacklinkHelper.update = function(entries, backlinks) {
                 for (var i = 0; i < backlinks.length; i++) {
                     entries[backlinks[i].entryPosition].highlight = backlinks[i].highlight;
@@ -395,21 +345,17 @@
                     entries[backlinks[i].entryPosition].secondaryPositionStatus = backlinks[i].secondaryPositionStatus;
                 }
             }
-
             EntryBacklinkHelper.copyEntry = function(oldEntry) {
                 return new Entry(oldEntry.value, oldEntry.highlight, oldEntry.position, oldEntry.secondaryPositionStatus);
             }
-
             EntryBacklinkHelper.copyBacklink = function(oldBacklink) {
                 return new Backlink(oldBacklink.value, oldBacklink.highlight, oldBacklink.entryPosition, oldBacklink.secondaryPositionStatus);
             }
-
             EntryBacklinkHelper.swapBacklinks = function(backlinks, i, j) {
                 var swaptemp = backlinks[i];
                 backlinks[i] = backlinks[j];
                 backlinks[j] = swaptemp;
             }
-
             var StateHelper = new Object();
             StateHelper.createNewState = function(numArray) {
                 var entries = new Array();
@@ -417,7 +363,6 @@
                 EntryBacklinkHelper.appendList(entries, backlinks, numArray);
                 return new State(entries, backlinks, 0, "", 0);
             }
-
             StateHelper.copyState = function(oldState) {
                 var newEntries = new Array();
                 var newBacklinks = new Array();
@@ -425,19 +370,15 @@
                     newEntries.push(EntryBacklinkHelper.copyEntry(oldState.entries[i]));
                     newBacklinks.push(EntryBacklinkHelper.copyBacklink(oldState.backlinks[i]));
                 }
-
                 var newLineNo = oldState.lineNo;
                 if (newLineNo instanceof Array)
                     newLineNo = oldState.lineNo.slice();
-
                 return new State(newEntries, newBacklinks, oldState.barsCountOffset, oldState.status, newLineNo);
             }
-
             StateHelper.updateCopyPush = function(list, stateToPush) {
                 EntryBacklinkHelper.update(stateToPush.entries, stateToPush.backlinks);
                 list.push(StateHelper.copyState(stateToPush));
             }
-
             var FunctionList = new Object();
             FunctionList.text_y = function(d) {
                 var barHeight = scaler(d.value);
@@ -457,37 +398,29 @@
                 else
                     return 'translation(0, 0)'; 
             }
-
             FunctionList.radixElement_left = function(d) {
                 if (d.secondaryPositionStatus == POSITION_USE_PRIMARY)
                     return d.position * 65 + centreBarsOffset + "px";
                 return d.secondaryPositionStatus * 65 + 17.5 + "px";
             }
-
             FunctionList.radixElement_bottom = function(d, i) {
                 if (d.secondaryPositionStatus == POSITION_USE_PRIMARY)
                     return 500 - 24 + "px";
-
                 return radixSortBucketOrdering[i] * 30 + 5 + "px";
             }
-
             FunctionList.radixElement_html = function(d) {
                 if (d.highlight == HIGHLIGHT_NONE)
                     return d.value;
-
                 var text = "" + d.value;
                 while (text.length != 4)
                     text = " " + text;
-
                 var positionToHighlight = 0;
                 var positionCounter = d.highlight;
                 while (positionCounter != 1) {
                     positionToHighlight++;
                     positionCounter /= 10;
                 }
-
                 positionToHighlight = 3 - positionToHighlight;
-
                 if (text.charAt(positionToHighlight) != " ") {
                     text = text.slice(0, positionToHighlight) +
                         "<span style='color: #B40404;'>" +
@@ -495,30 +428,24 @@
                         "</span>" +
                         text.slice(positionToHighlight + 1);
                 }
-
                 text = text.trim();
                 return text;
             }
-
             var makePaler = function(hexColor) {
                 var red = Math.floor(parseInt(hexColor.slice(1, 3), 16) + 150);
                 var green = Math.floor(parseInt(hexColor.slice(3, 5), 16) + 150);
                 var blue = Math.floor(parseInt(hexColor.slice(5, 7), 16) + 150);
-
                 if (red > 255) red = 255;
                 if (green > 255) green = 255;
                 if (blue > 255) blue = 255;
-
                 red = red.toString(16);
                 green = green.toString(16);
                 blue = blue.toString(16);
-
                 if (red.length == 1) red = "0" + red;
                 if (green.length == 1) green = "0" + green;
                 if (blue.length == 1) blue = "0" + blue;
                 return "#" + red + green + blue;
             }
-
             // Variables/Settings
             this.currentNumList = [9, 8, 7, 6, 5, 4, 3, 2, 1]; // the default
             /*bars details*/
@@ -532,7 +459,6 @@
             var graphElementSize = 10; // The width of the square in the side-graph representing 1 element
             var graphElementGap = 2; // The width of the gap between each element in the side-graph
             var graphRowGap = 10; // The height of the gap between each row in the side graph
-
             //Code body
             var statelist = new Array();
             var secondaryStatelist = new Array();
@@ -576,7 +502,6 @@
                 // Exit ==============================
                 var exitData = canvasData.exit()
                     .remove();
-
                 // Entry ==============================
                 var newData = canvasData.enter()
                     .append("g")
@@ -598,7 +523,6 @@
                     .text(function(d) {
                         return d.value;
                     });
-
                 canvasData.select("rect")
                     .transition()
                     .attr("height", function(d) {
@@ -608,7 +532,6 @@
                     .style("fill", function(d) {
                         return d.highlight;
                     });
-
                 canvasData.transition()
                     .attr("transform", FunctionList.g_transform)
             };
@@ -618,14 +541,11 @@
                     canvasData = countingSortSecondaryCanvas.selectAll("text").data([]);
                 else
                     canvasData = countingSortSecondaryCanvas.selectAll("text").data(state);
-
                 // Exit ==============================
                 var exitData = canvasData
                     .exit()
                     .remove();
-
                 // Entry ==============================
-
                 var newData = canvasData
                     .enter()
                     .append("text")
@@ -637,38 +557,30 @@
                     .text(function(d) {
                         return d;
                     });
-
                 // Update ==============================
-
                 canvasData
                     .transition()
                     .text(function(d) {
                         return d;
                     });
             };
-
             var drawRadixSortCanvas = function(state, secondaryState) {
                 centreBarsOffset = (1000 - (state.entries.length * 65 - 10)) / 2;
-
                 var canvasData = radixSortCanvas.selectAll("div").data(state.entries);
                 var radixSortBucketCount = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
                 radixSortBucketOrdering = new Array(state.backlinks.length);
-
                 for (var i = 0; i < state.backlinks.length; i++) {
                     if (state.backlinks.secondaryPositionStatus != POSITION_USE_PRIMARY)
                         radixSortBucketOrdering[state.backlinks[i].entryPosition] = radixSortBucketCount[state.backlinks[i].secondaryPositionStatus]++;
                 }
-
                 // Handle the buckets' DIV's
                 if (secondaryState)
                     $("#radix-sort-bucket-labels-collection").show();
                 else
                     $("#radix-sort-bucket-labels-collection").hide();
-
                 // Exit ==============================
                 var exitData = canvasData.exit()
                     .remove();
-
                 // Entry ==============================
                 var newData = canvasData.enter()
                     .append("div")
@@ -680,7 +592,6 @@
                         "bottom": FunctionList.radixElement_bottom
                     })
                     .html(FunctionList.radixElement_html);
-
                 // Update ==============================
                 canvasData.html(FunctionList.radixElement_html)
                     .transition()
@@ -689,7 +600,6 @@
                         "bottom": FunctionList.radixElement_bottom
                     });
             };
-
             var generateRandomNumberArray = function(size, limit) {
                 var numArray = new Array();
                 for (var i = 0; i < size; i++) {
@@ -697,15 +607,12 @@
                 }
                 return numArray;
             };
-
             var generateRandomNumber = function(min, max) { //generates a random integer between min and max (both inclusive)
                 return Math.floor(Math.random() * (max - min + 1)) + min;
             };
-
             var convertToNumber = function(num) {
                 return +num;
             };
-
             this.createList = function(type) {
                 var numArrayMaxListSize = 20;
                 var numArrayMaxElementValue = maxElementValue;
@@ -715,21 +622,16 @@
                 } else if (this.selectedSortFunction == this.countingSort) {
                     numArrayMaxElementValue = maxCountingSortElementValue;
                 }
-
                 var numArray = generateRandomNumberArray(generateRandomNumber(10, numArrayMaxListSize), numArrayMaxElementValue);
-
                 switch (type) {
                     case 'userdefined':
                         numArray = $('#userdefined-input').val().split(",");
-
                         if (numArray.length > numArrayMaxListSize) {
                             $("#create-err").html('You can&#39;t have more than {maxSize} elements!'.replace("{maxSize}", numArrayMaxListSize));
                             return false;
                         }
-
                         for (var i = 0; i < numArray.length; i++) {
                             var temp = convertToNumber(numArray[i]);
-
                             if (numArray[i].trim() == "") {
                                 $("#create-err").html('There seems to be a missing element (a duplicate comma somewhere perhaps?)');
                                 return false;
@@ -742,7 +644,6 @@
                                 $("#create-err").html('Sorry, you&#39;re restricted to values between 1 and {maxValue} inclusive. (Out of range number: {num}.)'.replace("{maxValue}", numArrayMaxElementValue).replace("{num}", numArray[i]));
                                 return false;
                             }
-
                             numArray[i] = convertToNumber(numArray[i]);
                         }
                         break;
@@ -760,12 +661,10 @@
                 if (type.indexOf("nearly") != -1) {
                     while (true) {
                         var newNumArray = numArray.slice();
-
                         var numOfSwaps = generateRandomNumber(1, 2);
                         for (var i = 0; i < numOfSwaps; i++) {
                             var firstSwappingIndex = generateRandomNumber(0, newNumArray.length - 4);
                             var secondSwappingIndex = generateRandomNumber(1, 3) + firstSwappingIndex;
-
                             var temp = numArray[firstSwappingIndex];
                             newNumArray[firstSwappingIndex] = numArray[secondSwappingIndex];
                             newNumArray[secondSwappingIndex] = temp;
@@ -777,20 +676,16 @@
                                 break;
                             }
                         }
-
                         if (!isEquals) {
                             numArray = newNumArray;
                             break;
                         }
                     }
                 }
-
                 this.loadNumberList(numArray);
             }
-
             this.loadNumberList = function(numArray) {
                 $("#create-err").html("");
-
                 issPlaying = false;
                 currentStep = 0;
                 this.currentNumList = numArray;
@@ -798,23 +693,18 @@
                 secondaryStatelist = [null];
                 drawState(0);
             }
-
             this.setSelectedSortFunction = function(f) {
                 this.selectedSortFunction = f;
                 isRadixSort = (this.selectedSortFunction == this.radixSort);
                 isCountingSort = (this.selectedSortFunction == this.countingSort);
             }
-
             this.sort = function(callback) {
                 return this.selectedSortFunction(callback); //selecting algorithm
             }
 // radix sort
-
-
             this.radixSort = function(callback) {
                 var numElements = statelist[0].backlinks.length;
                 var state = StateHelper.copyState(statelist[0]);
-
                 populatePseudocode([
                     'create 10 buckets (queues) for each digit (0 to 9)',
                     'for each digit placing',
@@ -824,7 +714,6 @@
                     '    while bucket is non-empty',
                     '      restore element to list'
                 ]);
-
                 secondaryStatelist = [false];
                 var currentPlacing = 1;
                 var targetPlacing = 1;
@@ -840,7 +729,6 @@
                     [],
                     []
                 ];
-
                 var maxValue = d3.max(state.backlinks, function(d) {
                     return d.value;
                 });
@@ -848,14 +736,11 @@
                     targetPlacing *= 10;
                     maxValue = Math.floor(maxValue / 10);
                 }
-
                 for (; currentPlacing <= targetPlacing; currentPlacing *= 10) {
                     for (var i = 0; i < numElements; i++)
                         state.backlinks[i].highlight = currentPlacing;
-
                     StateHelper.updateCopyPush(statelist, state);
                     secondaryStatelist.push(true);
-
                     for (var i = 0; i < numElements; i++) {
                         var currentDigit = Math.floor(state.backlinks[i].value / currentPlacing) % 10;
                         state.backlinks[i].secondaryPositionStatus = currentDigit;
@@ -863,53 +748,42 @@
                         StateHelper.updateCopyPush(statelist, state);
                         secondaryStatelist.push(true);
                     }
-
                     for (var i = 0, j = 0; i <= 9;) {
                         if (backlinkBuckets[i].length == 0) {
                             i++;
                             continue;
                         }
-
                         state.backlinks[j++] = backlinkBuckets[i].shift();
                     }
-
                     for (var i = 0; i < numElements; i++) {
                         state.backlinks[i].secondaryPositionStatus = POSITION_USE_PRIMARY;
                         StateHelper.updateCopyPush(statelist, state);
                         secondaryStatelist.push(true);
                     }
                 }
-
                 for (var i = 0; i < numElements; i++)
                     state.backlinks[i].highlight = HIGHLIGHT_NONE;
                 StateHelper.updateCopyPush(statelist, state);
                 secondaryStatelist.push(false);
-
                 this.play(callback);
                 return true;
             }
 // quick sort code
-
             this.randomizedQuickSort = function(callback) {
                 quickSortUseRandomizedPivot = true;
                 quickSortStart();
-
                 this.play(callback);
                 return true;
             }
-
             this.quickSort = function(callback) {
                 quickSortUseRandomizedPivot = false;
                 quickSortStart();
-
                 this.play(callback);
                 return true;
             }
-
             var quickSortStart = function() {
                 var numElements = statelist[0].backlinks.length;
                 var state = StateHelper.copyState(statelist[statelist.length - 1]);
-
                 populatePseudocode([
                     'for each (unsorted) partition',
                     (quickSortUseRandomizedPivot) ? 'randomly select pivot, swap with first element' : 'set first element as pivot',
@@ -919,17 +793,13 @@
                     '      swap(i, storeIndex); storeIndex++',
                     '  swap(pivot, storeIndex - 1)'
                 ]);
-
                 quickSortSplit(state, 0, numElements - 1);
-
                 state.lineNo = 0;
                 state.status = 'List is sorted!';
-
                 for (var i = 0; i < numElements; i++)
                     state.backlinks[i].highlight = HIGHLIGHT_NONE; //unhighlight everything
                 StateHelper.updateCopyPush(statelist, state);
             }
-
             var quickSortSplit = function(state, startIndex, endIndex) { //startIndex & endIndex inclusive
                 state.status = 'Working on partition [{partition}] (index {startIndex} to {endIndex}).'
                     .replace("{partition}", state.backlinks.slice(startIndex, endIndex + 1).map(function(d) {
@@ -937,74 +807,56 @@
                     }))
                     .replace("{startIndex}", startIndex).replace("{endIndex}", endIndex);
                 state.lineNo = 1;
-
                 if (startIndex > endIndex)
                     return;
-
                 if (startIndex == endIndex) {
                     state.status += ' Since partition size == 1, element inside partition is necessarily at sorted position.';
                     state.backlinks[startIndex].highlight = HIGHLIGHT_SORTED;
                     StateHelper.updateCopyPush(statelist, state);
                     return;
                 }
-
                 var middleIndex = quickSortPartition(state, startIndex, endIndex);
                 quickSortSplit(state, startIndex, middleIndex - 1);
                 quickSortSplit(state, middleIndex + 1, endIndex);
             }
-
             var quickSortPartition = function(state, startIndex, endIndex) {
-
                 var pivotIndex;
                 if (quickSortUseRandomizedPivot) {
-
                     pivotIndex = generateRandomNumber(startIndex, endIndex);
-
                     state.status += ' Randomly selected {pivot} (index {index}) as pivot.'.replace("{pivot}", state.backlinks[pivotIndex].value).replace("{index}", pivotIndex);
                     state.lineNo = [1, 2];
-
                     state.backlinks[pivotIndex].highlight = HIGHLIGHT_PIVOT;
                     StateHelper.updateCopyPush(statelist, state);
-
                     if (pivotIndex != startIndex) {
                         state.status = 'Swap pivot ({pivot}}, index {index}) with first element ({first}, index {firstIndex}). (storeIndex = {storeIndex}.)'.replace("{pivot}", state.backlinks[pivotIndex].value).replace("{index}", pivotIndex)
                             .replace("{first}", state.backlinks[startIndex].value).replace("{firstIndex}", startIndex).replace("{storeIndex}", (startIndex + 1));
-
                         state.lineNo = [2, 3];
-
                         EntryBacklinkHelper.swapBacklinks(state.backlinks, pivotIndex, startIndex);
                         pivotIndex = startIndex;
                         StateHelper.updateCopyPush(statelist, state);
                     }
                 } else {
                     pivotIndex = startIndex;
-
                     state.status += ' Selecting {pivot} as pivot. (storeIndex = {storeIndex}.)'.replace("{pivot}", state.backlinks[pivotIndex].value).replace("{storeIndex}", (startIndex + 1));
                     state.lineNo = [1, 2, 3];
-
                     state.backlinks[pivotIndex].highlight = HIGHLIGHT_PIVOT;
                     StateHelper.updateCopyPush(statelist, state);
                 }
-
                 var storeIndex = pivotIndex + 1;
                 var pivotValue = state.backlinks[pivotIndex].value;
-
                 for (var i = storeIndex; i <= endIndex; i++) {
                     state.status = 'Checking if {val} < {pivot} (pivot).'.replace("{val}", state.backlinks[i].value).replace("{pivot}", pivotValue);
                     state.lineNo = [4, 5];
-
                     state.backlinks[i].highlight = HIGHLIGHT_SPECIAL;
                     StateHelper.updateCopyPush(statelist, state);
                     if (state.backlinks[i].value < pivotValue) {
                         state.status = '{val} &lt; {pivot} (pivot) is true. Swapping index {idx} (value = {val}) with element at storeIndex {storeIdx} (value = {storeVal}). (Value of storeIndex = {newStoreIdx}).'.replace("{val}", state.backlinks[i].value).replace("{pivot}", pivotValue)
                             .replace("{idx}", i).replace("{storeIdx}", storeIndex).replace("{storeVal}", state.backlinks[storeIndex].value).replace("newStoreIdx", (storeIndex + 1));
                         state.lineNo = [4, 6];
-
                         if (i != storeIndex) {
                             EntryBacklinkHelper.swapBacklinks(state.backlinks, storeIndex, i);
                             StateHelper.updateCopyPush(statelist, state);
                         }
-
                         state.backlinks[storeIndex].highlight = HIGHLIGHT_LEFT;
                         storeIndex++;
                     } else {
@@ -1021,26 +873,18 @@
                     EntryBacklinkHelper.swapBacklinks(state.backlinks, storeIndex - 1, pivotIndex);
                     StateHelper.updateCopyPush(statelist, state);
                 }
-
                 state.status = 'Pivot is now at its sorted position.';
                 state.lineNo = 7;
-
                 for (var i = startIndex; i <= endIndex; i++)
                     state.backlinks[i].highlight = HIGHLIGHT_NONE; //unhighlight everything
                 state.backlinks[storeIndex - 1].highlight = HIGHLIGHT_SORTED;
                 StateHelper.updateCopyPush(statelist, state);
-
                 return storeIndex - 1;
             }
-
-
 //merge sort
-
-
             this.mergeSort = function(callback) {
                 var numElements = statelist[0].backlinks.length;
                 var state = StateHelper.copyState(statelist[0]);
-
                 populatePseudocode([
                     'split each element into partitions of size 1',
                     'recursively merge adjacent partitions',
@@ -1050,69 +894,52 @@
                     '    else: copy rightPartHeadValue' + ((this.computeInversionIndex) ? '; Increase InvIdx' : ""),
                     'copy elements back to original array'
                 ]);
-
                 mergeSortInversionIndexCounter = 0;
-
                 for (var i = 0; i < numElements; i++) {
                     state.backlinks[i].highlight = HIGHLIGHT_RAINBOW[i];
                 }
-
                 state.status = 'We split the array into partitions of 1 (each partition takes on a distinct color).';
                 status.lineNo = 1;
                 StateHelper.updateCopyPush(statelist, state);
-
                 this.mergeSortSplitMerge(state, 0, numElements);
-
                 for (var i = 0; i < numElements; i++)
                     state.backlinks[i].highlight = HIGHLIGHT_NONE; //unhighlight everything
-
                 state.status = 'List is sorted!';
                 if (this.computeInversionIndex) {
                     state.status += ' (Inversion Index = {idx}.)'.replace("{idx}", mergeSortInversionIndexCounter);
                 }
-
                 state.lineNo = 0;
                 StateHelper.updateCopyPush(statelist, state);
-
                 this.play(callback);
                 return true;
             }
-
             this.mergeSortSplitMerge = function(state, startIndex, endIndex) { //startIndex inclusive, endIndex exclusive
                 if (endIndex - startIndex <= 1)
                     return;
-
                 var middleIndex = Math.ceil((startIndex + endIndex) / 2);
                 this.mergeSortSplitMerge(state, startIndex, middleIndex);
                 this.mergeSortSplitMerge(state, middleIndex, endIndex);
                 this.mergeSortMerge(state, startIndex, middleIndex, endIndex)
-
                 // Copy array back
                 state.status = 'We copy the elements from the new array back into the original array.';
                 state.lineNo = 7;
-
                 var duplicateBacklinks = new Array();
                 for (var i = startIndex; i < endIndex; i++) {
                     var newPosition = state.backlinks[i].secondaryPositionStatus;
                     duplicateBacklinks[newPosition] = state.backlinks[i];
                 }
-
                 for (var i = startIndex; i < endIndex; i++) {
                     state.backlinks[i] = duplicateBacklinks[i];
                 }
-
                 for (var i = startIndex; i < endIndex; i++) {
                     state.backlinks[i].secondaryPositionStatus = POSITION_USE_PRIMARY;
                     StateHelper.updateCopyPush(statelist, state);
                 }
             }
-
             this.mergeSortMerge = function(state, startIndex, middleIndex, endIndex) {
                 var leftIndex = startIndex;
                 var rightIndex = middleIndex;
-
                 var newHighlightColor = state.backlinks[startIndex].highlight;
-
                 state.status = 'We now merge partitions [{partition1}] (index {startIdx1} to {endIdx1}) and [{partition2}] (index {startIdx2} to {endIdx2}).'
                     .replace('{partition1}', state.backlinks.slice(startIndex, middleIndex).map(function(d) {
                         return d.value;
@@ -1123,17 +950,13 @@
                     }))
                     .replace("{startIdx2}", middleIndex).replace("{endIdx2}", (endIndex - 1));
                 state.lineNo = 2;
-
                 state.backlinks[leftIndex].highlight = makePaler(state.backlinks[leftIndex].highlight);
                 state.backlinks[rightIndex].highlight = makePaler(state.backlinks[rightIndex].highlight);
                 StateHelper.updateCopyPush(statelist, state);
-
                 for (var i = startIndex; i < endIndex; i++) {
-
                     if (leftIndex < middleIndex && (rightIndex >= endIndex || state.backlinks[leftIndex].value <= state.backlinks[rightIndex].value)) {
                         state.backlinks[leftIndex].highlight = newHighlightColor;
                         state.backlinks[leftIndex].secondaryPositionStatus = i;
-
                         if (rightIndex < endIndex) {
                             state.status = 'Since {leftPart} (left partition) <= {rightPart} (right partition), we copy {leftPart} into new array.'
                                 .replace("{leftPart}", state.backlinks[leftIndex].value).replace("{rightPart}", state.backlinks[rightIndex].value);
@@ -1141,23 +964,19 @@
                             state.status = 'Since right partition is empty, we copy {leftPart} (left partition) into new array.'.replace("{leftPart}", state.backlinks[leftIndex].value);
                         }
                         state.lineNo = [3, 4, 5];
-
                         leftIndex++;
                         if (leftIndex != middleIndex)
                             state.backlinks[leftIndex].highlight = makePaler(state.backlinks[leftIndex].highlight);
-
                         StateHelper.updateCopyPush(statelist, state);
                     } else {
                         state.backlinks[rightIndex].highlight = newHighlightColor;
                         state.backlinks[rightIndex].secondaryPositionStatus = i;
-
                         if (leftIndex < middleIndex) {
                             state.status = 'Since {leftPart} (left partition) > {rightPart} (right partition), we copy {rightPart} into new array.'
                                 .replace("{leftPart}", state.backlinks[leftIndex].value).replace("{rightPart}", state.backlinks[rightIndex].value);
                         } else {
                             state.status = 'Since left partition is empty, we copy {rightPart} (right partition) into new array.'.replace("{rightPart}", state.backlinks[rightIndex].value);
                         }
-
                         if (this.computeInversionIndex) {
                             mergeSortInversionIndexCounter += middleIndex - leftIndex;
                             state.status += '(We add size_of_left_partition (= {sizeofleft}) to <b>InvIdx</b> ({inversionidxcounter}).)'
@@ -1166,23 +985,17 @@
                             state.status += 'wierd';
                         }
                         state.lineNo = [3, 6];
-
                         rightIndex++;
                         if (rightIndex != endIndex)
                             state.backlinks[rightIndex].highlight = makePaler(state.backlinks[rightIndex].highlight);
-
                         StateHelper.updateCopyPush(statelist, state);
                     }
                 }
             }
-
-
 // insertion sort
-
             this.insertionSort = function(callback) {
                 var numElements = statelist[0].backlinks.length;
                 var state = StateHelper.copyState(statelist[0]);
-
                 populatePseudocode([
                     'mark first element as sorted',
                     'for each unsorted element X',
@@ -1192,14 +1005,12 @@
                     '      move sorted element to the right by 1',
                     '    break loop and insert X here'
                 ]);
-
                 // First element always sorted
                 state.lineNo = 1;
                 // Mark the first element ({firstVal}) as sorted.
                 state.status = 'Mark the first element ({firstVal}) as sorted.'.replace("{firstVal}", state.backlinks[0].value);
                 state.backlinks[0].highlight = HIGHLIGHT_SORTED;
                 StateHelper.updateCopyPush(statelist, state);
-
                 for (var i = 1; i < numElements; i++) {
                     // Highlight first unsorted element
                     state.lineNo = [2, 3];
@@ -1208,13 +1019,11 @@
                     state.backlinks[i].highlight = HIGHLIGHT_SPECIAL;
                     state.backlinks[i].secondaryPositionStatus = POSITION_USE_SECONDARY_IN_DEFAULT_POSITION;
                     StateHelper.updateCopyPush(statelist, state);
-
                     for (var j = i - 1; j >= 0; j--) {
                         state.lineNo = 4;
                         state.status = 'Figure where to insert extracted element; comparing with sorted element {val}.'.replace("{val}", state.backlinks[j].value);;
                         state.backlinks[j].highlight = HIGHLIGHT_STANDARD;
                         StateHelper.updateCopyPush(statelist, state);
-
                         if (state.backlinks[j].value > state.backlinks[j + 1].value) {
                             state.lineNo = [5, 6];
                             state.status = '{val1} > {val2} is true, hence move current sorted element ({val1}) to the right by 1.'.replace("{val1}", state.backlinks[j].value).replace("{val2}", state.backlinks[j + 1].value);
@@ -1223,7 +1032,6 @@
                             state.backlinks[j + 1].highlight = HIGHLIGHT_SORTED;
                         } else {
                             state.lineNo = 7;
-
                             state.status = '{val1} > {val2} is false, insert element at current position.'.replace("{val1}", state.backlinks[j].value).replace("{val2}", state.backlinks[j + 1].value);
                             state.backlinks[j].highlight = HIGHLIGHT_SORTED;
                             state.backlinks[j + 1].secondaryPositionStatus = POSITION_USE_PRIMARY;
@@ -1232,7 +1040,6 @@
                             break;
                         }
                     }
-
                     if (state.backlinks[0].secondaryPositionStatus == POSITION_USE_SECONDARY_IN_DEFAULT_POSITION) {
                         state.lineNo = 4;
                         state.status = 'At beginning of array (nothing to compare), hence insert element at current position.';
@@ -1241,7 +1048,6 @@
                         StateHelper.updateCopyPush(statelist, state);
                     }
                 }
-
                 for (var i = 0; i < numElements; i++)
                     state.backlinks[i].highlight = HIGHLIGHT_NONE; //unhighlight everything
                 state.lineNo = 0;
@@ -1250,14 +1056,10 @@
                 this.play(callback);
                 return true;
             }
-
-
 //selection sort
-
             this.selectionSort = function(callback) {
                 var numElements = statelist[0].backlinks.length;
                 var state = StateHelper.copyState(statelist[0]);
-
                 populatePseudocode([
                     'repeat (numOfElements - 1) times',
                     '  set the first unsorted element as the minimum',
@@ -1266,15 +1068,12 @@
                     '      set element as new minimum',
                     '  swap minimum with first unsorted position'
                 ]);
-
                 for (var i = 0; i < numElements - 1; i++) {
                     var minPosition = i;
                     state.status = 'Iteration {iteration}: Set {val} as the current minimum, then iterate through the remaining unsorted elements to find the true minimum.'.replace("{iteration}", (i + 1)).replace("{val}", state.backlinks[i].value);
                     state.lineNo = [1, 2, 3];
                     state.backlinks[minPosition].highlight = HIGHLIGHT_SPECIAL;
-
                     StateHelper.updateCopyPush(statelist, state);
-
                     for (var j = i + 1; j < numElements; j++) {
                         state.status = 'Check if {val} is smaller than the current minimum ({minVal}).'.replace("{val}", state.backlinks[j].value).replace("{minVal}", state.backlinks[minPosition].value);
                         state.lineNo = 4;
@@ -1295,7 +1094,6 @@
                         state.lineNo = 6;
                         state.backlinks[i].highlight = HIGHLIGHT_SPECIAL;
                         StateHelper.updateCopyPush(statelist, state);
-
                         EntryBacklinkHelper.swapBacklinks(state.backlinks, minPosition, i);
                         StateHelper.updateCopyPush(statelist, state);
                     } else {
@@ -1316,10 +1114,7 @@
                 this.play(callback);
                 return true;
             }
-
 // bubble sort
-
-
             this.bubbleSort = function(callback) {
                 var numElements = statelist[0].backlinks.length;
                 var state = StateHelper.copyState(statelist[0]);
@@ -1333,7 +1128,6 @@
                     '      <b>swapped </b>= true' + ((this.computeInversionIndex) ? '; <b>swapCounter</b>++' : ""),
                     'while <b>swapped</b>'
                 ]);
-
                 var swapped;
                 var indexOfLastUnsortedElement = numElements;
                 do {
@@ -1341,7 +1135,6 @@
                     state.status = 'Set the <b>swapped </b>flag to false.<div>Then iterate from index 1 to {endIdx} inclusive.</div>'.replace("{endIdx}", indexOfLastUnsortedElement - 1);
                     state.lineNo = [2, 3];
                     StateHelper.updateCopyPush(statelist, state);
-
                     for (var i = 1; i < indexOfLastUnsortedElement; i++) {
                         state.backlinks[i - 1].highlight = HIGHLIGHT_STANDARD;
                         state.backlinks[i].highlight = HIGHLIGHT_STANDARD;
@@ -1383,8 +1176,6 @@
                 this.play(callback);
                 return true;
             }
-
-
             this.clearPseudocode = function() {
                 populatePseudocode([]);
             }
@@ -1433,28 +1224,23 @@
             this.getCurrentIteration = function() {
                 return currentStep;
             }
-
             this.getTotalIteration = function() {
                 return statelist.length;
             }
-
             this.forceNext = function() {
                 if ((currentStep + 1) < statelist.length)
                     currentStep++;
                 drawCurrentState();
             }
-
             this.forcePrevious = function() {
                 if ((currentStep - 1) >= 0)
                     currentStep--;
                 drawCurrentState();
             }
-
             this.jumpToIteration = function(n) {
                 currentStep = n;
                 drawCurrentState();
             }
-
             this.play = function(callback) {
                 issPlaying = true;
                 drawCurrentState();
@@ -1468,12 +1254,10 @@
                     }
                 }, transitionTime);
             }
-
             this.pause = function() {
                 issPlaying = false;
                 clearInterval(animInterval);
             }
-
             this.replay = function() {
                 issPlaying = true;
                 currentStep = 0;
@@ -1486,7 +1270,6 @@
                         clearInterval(animInterval);
                 }, transitionTime);
             }
-
             this.stop = function() {
                 issPlaying = false;
                 statelist = [statelist[0]];
@@ -1495,7 +1278,6 @@
                 drawState(0);
             }
         }
-
         // sorting action
         var actionsWidth = 150;
         var statusCodetraceWidth = 420;
@@ -1503,14 +1285,12 @@
         var isInsertOpen = false;
         var isRemoveOpen = false;
         var isSortOpen = false;
-
         function openCreate() {
             if (!isCreateOpen) {
                 $('.create').fadeIn('fast');
                 isCreateOpen = true;
             }
         }
-
         function closeCreate() {
             if (isCreateOpen) {
                 $('.create').fadeOut('fast');
@@ -1518,14 +1298,12 @@
                 isCreateOpen = false;
             }
         }
-
         function openInsert() {
             if (!isInsertOpen) {
                 $('.insert').fadeIn('fast');
                 isInsertOpen = true;
             }
         }
-
         function closeInsert() {
             if (isInsertOpen) {
                 $('.insert').fadeOut('fast');
@@ -1533,14 +1311,12 @@
                 isInsertOpen = false;
             }
         }
-
         function openRemove() {
             if (!isRemoveOpen) {
                 $('.remove').fadeIn('fast');
                 isRemoveOpen = true;
             }
         }
-
         function closeRemove() {
             if (isRemoveOpen) {
                 $('.remove').fadeOut('fast');
@@ -1548,14 +1324,12 @@
                 isRemoveOpen = false;
             }
         }
-
         function openSort() {
             if (!isSortOpen) {
                 $('.sort').fadeIn('fast');
                 isSortOpen = true;
             }
         }
-
         function closeSort() {
             if (isSortOpen) {
                 $('.sort').fadeOut('fast');
@@ -1563,7 +1337,6 @@
                 isSortOpen = false;
             }
         }
-
         function hideEntireActionsPanel() {
             closeCreate();
             closeInsert();
@@ -1578,7 +1351,6 @@
             var six_modes = ["Bubble", "Selection", "Insertion", "Merge", "Quick", "Radix"];
             $('#title-' + six_modes[Math.floor(Math.random() * 6)]).click(); // randomly open one of the six sorting algorithm mode every time
             $('#play').hide();
-
             d3.selectAll("#radix-sort-bucket-labels-collection span")
                 .style({
                     "left": function(d, i) {
@@ -1594,28 +1366,24 @@
                 $('#userdefined-input').val(createArray);
                 createList("userdefined");
             }
-
             $('#create').click(function() {
                 closeInsert();
                 closeRemove();
                 closeSort();
                 openCreate();
             });
-
             $('#insert').click(function() {
                 closeCreate();
                 closeRemove();
                 closeSort();
                 openInsert();
             });
-
             $('#remove').click(function() {
                 closeCreate();
                 closeInsert();
                 closeSort();
                 openRemove();
             });
-
             $('#sort').click(function() {
                 closeCreate();
                 closeInsert();
@@ -1623,13 +1391,10 @@
                 openSort();
             });
         });
-
         //this viz-specific code
         var gw = new Sorting();
-
         const DEFAULT_DATA = "10,9,8,7,6";
         const DEFAULT_RADIX_DATA = "109,108,107,106";
-
         // title changing
         function AbbreviateTitle() {
             $('#title-Bubble').text("Bubble").attr('title', 'Bubble Sort');
@@ -1689,14 +1454,12 @@
             AbbreviateTitle();
             $('#title-Radix').text('Radix Sort');
         });
-
         function changeSortType(newSortingFunction, customNumberList) {
             if (!customNumberList)
                 $('#userdefined-input').val(DEFAULT_DATA);
             else
                 $('#userdefined-input').val(customNumberList);
             createList('userdefined');
-
             if (isPlaying) stop();
             showActionsPanel();
             hideStatusPanel();
@@ -1704,7 +1467,6 @@
             gw.clearPseudocode();
             gw.setSelectedSortFunction(newSortingFunction);
         }
-
         function createList(type) {
             if (isPlaying) stop();
             setTimeout(function() {
@@ -1715,7 +1477,6 @@
                 }
             }, 500);
         }
-
         function sort(callback) {
             gw.computeInversionIndex = $('#sort-bubble-merge-inversion-checkbox').prop('checked');
             if (isPlaying) stop();
@@ -1728,19 +1489,15 @@
                 }
             }, 500);
         }
-
         // submenu stuff
         var lastSubmenuShown = null;
-
         function triggerSubmenu(which) {
             hideAllSubmenus();
             if (lastSubmenuShown == which) {
                 lastSubmenuShown = null;
                 return;
             }
-
             lastSubmenuShown = which;
-
             $(".create").css("bottom", "60px");
             if (which == "sorted") {
                 $("#create-sorted-increasing").show();
@@ -1750,7 +1507,6 @@
                 $("#create-nearly-sorted-decreasing").show();
             }
         }
-
         function hideAllSubmenus() {
             $(".create").css("bottom", "92px");
             $("#create-sorted-increasing").hide();
@@ -1758,25 +1514,21 @@
             $("#create-nearly-sorted-increasing").hide();
             $("#create-nearly-sorted-decreasing").hide();
         }
-
         // sort options
         function hideAllSortingOptions() {
             $("#sort-bubble-merge-inversion").css("display", "none");
         }
-
         // canvas
         function hideAllCanvases() {
             $("#viz-canvas").hide();
             $("#viz-counting-sort-secondary-canvas").hide();
             $("#viz-radix-sort-canvas").hide();
         }
-
         function showStandardCanvas() {
             $("#viz-canvas").show();
             $("#viz-counting-sort-secondary-canvas").hide();
             $("#viz-radix-sort-canvas").hide();
         }
-
         function SORT(mode) {
             hideSlide(function() {
                 sort(showSlide);
@@ -1784,5 +1536,4 @@
         }
     </script>
 </body>
-
 </html>
